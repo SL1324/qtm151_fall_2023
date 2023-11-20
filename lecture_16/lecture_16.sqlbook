@@ -64,6 +64,8 @@ CREATE TABLE drivers(
 
 Add rows to table
 -- SQLBook: Code
+
+-- SQLBook: Code
 -- "INSET INTO" adds rows with VALUES ... to the bottom of the table
 -- In SQL different lines need to be separated by a semicolon ";"
 -- You write system commands in capital letters to easily distinguish
@@ -188,7 +190,8 @@ Try it yourself!
 with more than 60 victories
 -- SQLBook: Code
 -- Write your own code!
-SELECT driver_name, nationality, driver_id, victories FROM drivers;
+SELECT driver_name, nationality, driver_id, victories FROM drivers
+WHERE victories >= 60
 
 -- SQLBook: Markup
 # <span style="color:darkblue"> III. Groupby + Chaining </span>
