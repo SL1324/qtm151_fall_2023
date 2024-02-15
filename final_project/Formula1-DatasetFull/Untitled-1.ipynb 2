@@ -1,0 +1,386 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np # linear algebra\n",
+    "import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)\n",
+    "import matplotlib as mpl # visualizations\n",
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "results=pd.read_csv('raw_data/results.csv') #import results dataset\n",
+    "races=pd.read_csv(\"raw_data/races.csv\")\n",
+    "drivers=pd.read_csv(\"raw_data/drivers.csv\")\n",
+    "pit_stops=pd.read_csv(\"raw_data/pit_stops.csv\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "AttributeError",
+     "evalue": "'Series' object has no attribute 'isnumeric'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mAttributeError\u001b[0m                            Traceback (most recent call last)",
+      "\u001b[0;32m/var/folders/qz/jjc79m_d5q16tjgh87bbmz040000gn/T/ipykernel_2630/3722627434.py\u001b[0m in \u001b[0;36m?\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0msubset\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mresults\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mquery\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"milliseconds.isnumeric()==False\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      2\u001b[0m \u001b[0mlist_unique\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mpd\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0munique\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msubset\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m\"milliseconds\"\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      3\u001b[0m \u001b[0mprint\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mlist_unique\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/frame.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, expr, inplace, **kwargs)\u001b[0m\n\u001b[1;32m   4436\u001b[0m             \u001b[0mmsg\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34mf\"expr must be a string to be evaluated, {type(expr)} given\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   4437\u001b[0m             \u001b[0;32mraise\u001b[0m \u001b[0mValueError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mmsg\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   4438\u001b[0m         \u001b[0mkwargs\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m\"level\"\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mkwargs\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mpop\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"level\"\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m0\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   4439\u001b[0m         \u001b[0mkwargs\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m\"target\"\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 4440\u001b[0;31m         \u001b[0mres\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0meval\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mexpr\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   4441\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   4442\u001b[0m         \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   4443\u001b[0m             \u001b[0mresult\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mloc\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mres\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/frame.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, expr, inplace, **kwargs)\u001b[0m\n\u001b[1;32m   4562\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0;34m\"target\"\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mkwargs\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   4563\u001b[0m             \u001b[0mkwargs\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m\"target\"\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   4564\u001b[0m         \u001b[0mkwargs\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m\"resolvers\"\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtuple\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mget\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"resolvers\"\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0mresolvers\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   4565\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 4566\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0m_eval\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mexpr\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0minplace\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0minplace\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/eval.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(expr, parser, engine, local_dict, global_dict, resolvers, level, target, inplace)\u001b[0m\n\u001b[1;32m    332\u001b[0m             \u001b[0mresolvers\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mresolvers\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    333\u001b[0m             \u001b[0mtarget\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mtarget\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    334\u001b[0m         )\n\u001b[1;32m    335\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 336\u001b[0;31m         \u001b[0mparsed_expr\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mExpr\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mexpr\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mengine\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mengine\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mparser\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mparser\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0menv\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0menv\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    337\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    338\u001b[0m         if engine == \"numexpr\" and (\n\u001b[1;32m    339\u001b[0m             \u001b[0mis_extension_array_dtype\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mparsed_expr\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mterms\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mreturn_type\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, expr, engine, parser, env, level)\u001b[0m\n\u001b[1;32m    805\u001b[0m         \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0menv\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0menv\u001b[0m \u001b[0;32mor\u001b[0m \u001b[0mScope\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mlevel\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mlevel\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    806\u001b[0m         \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mengine\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mengine\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    807\u001b[0m         \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mparser\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mparser\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    808\u001b[0m         \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_visitor\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mPARSERS\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mparser\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0menv\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mengine\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mparser\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 809\u001b[0;31m         \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mterms\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mparse\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self)\u001b[0m\n\u001b[1;32m    824\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0mparse\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    825\u001b[0m         \"\"\"\n\u001b[1;32m    826\u001b[0m         \u001b[0mParse\u001b[0m \u001b[0man\u001b[0m \u001b[0mexpression\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    827\u001b[0m         \"\"\"\n\u001b[0;32m--> 828\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_visitor\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mvisit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mexpr\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, **kwargs)\u001b[0m\n\u001b[1;32m    411\u001b[0m                 \u001b[0;32mraise\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    412\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    413\u001b[0m         \u001b[0mmethod\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34mf\"visit_{type(node).__name__}\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    414\u001b[0m         \u001b[0mvisitor\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mgetattr\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmethod\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 415\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mvisitor\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, **kwargs)\u001b[0m\n\u001b[1;32m    417\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0mvisit_Module\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mnode\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    418\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mlen\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mbody\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m!=\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    419\u001b[0m             \u001b[0;32mraise\u001b[0m \u001b[0mSyntaxError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"only a single expression is allowed\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    420\u001b[0m         \u001b[0mexpr\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnode\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mbody\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 421\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mvisit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mexpr\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, **kwargs)\u001b[0m\n\u001b[1;32m    411\u001b[0m                 \u001b[0;32mraise\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    412\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    413\u001b[0m         \u001b[0mmethod\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34mf\"visit_{type(node).__name__}\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    414\u001b[0m         \u001b[0mvisitor\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mgetattr\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmethod\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 415\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mvisitor\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, **kwargs)\u001b[0m\n\u001b[1;32m    423\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0mvisit_Expr\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mnode\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 424\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mvisit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mvalue\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, **kwargs)\u001b[0m\n\u001b[1;32m    411\u001b[0m                 \u001b[0;32mraise\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    412\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    413\u001b[0m         \u001b[0mmethod\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34mf\"visit_{type(node).__name__}\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    414\u001b[0m         \u001b[0mvisitor\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mgetattr\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmethod\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 415\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mvisitor\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, **kwargs)\u001b[0m\n\u001b[1;32m    715\u001b[0m         \u001b[0;31m# base case: we have something like a CMP b\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    716\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mlen\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mcomps\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m==\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    717\u001b[0m             \u001b[0mop\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtranslate_In\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mops\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    718\u001b[0m             \u001b[0mbinop\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mast\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mBinOp\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mop\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mop\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mleft\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mleft\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mright\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mcomps\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 719\u001b[0;31m             \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mvisit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mbinop\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    720\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    721\u001b[0m         \u001b[0;31m# recursive case: we have a chained comparison, a CMP b CMP c, etc.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    722\u001b[0m         \u001b[0mleft\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnode\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mleft\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, **kwargs)\u001b[0m\n\u001b[1;32m    411\u001b[0m                 \u001b[0;32mraise\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    412\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    413\u001b[0m         \u001b[0mmethod\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34mf\"visit_{type(node).__name__}\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    414\u001b[0m         \u001b[0mvisitor\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mgetattr\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmethod\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 415\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mvisitor\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, **kwargs)\u001b[0m\n\u001b[1;32m    534\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0mvisit_BinOp\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mnode\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 535\u001b[0;31m         \u001b[0mop\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mop_class\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mleft\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mright\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_maybe_transform_eq_ne\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    536\u001b[0m         \u001b[0mleft\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mright\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_maybe_downcast_constants\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mleft\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mright\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    537\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_maybe_evaluate_binop\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mop\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mop_class\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mleft\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mright\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, left, right)\u001b[0m\n\u001b[1;32m    453\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0m_maybe_transform_eq_ne\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mnode\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mleft\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mright\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    454\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mleft\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 455\u001b[0;31m             \u001b[0mleft\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mvisit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mleft\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mside\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m\"left\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    456\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mright\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    457\u001b[0m             \u001b[0mright\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mvisit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mright\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mside\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m\"right\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    458\u001b[0m         \u001b[0mop\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mop_class\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mleft\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mright\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_rewrite_membership_op\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mleft\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mright\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, **kwargs)\u001b[0m\n\u001b[1;32m    411\u001b[0m                 \u001b[0;32mraise\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    412\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    413\u001b[0m         \u001b[0mmethod\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34mf\"visit_{type(node).__name__}\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    414\u001b[0m         \u001b[0mvisitor\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mgetattr\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmethod\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 415\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mvisitor\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, side, **kwargs)\u001b[0m\n\u001b[1;32m    657\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0mvisit_Call\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mnode\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mside\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    658\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mfunc\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mast\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mAttribute\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0mnode\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mfunc\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mattr\u001b[0m \u001b[0;34m!=\u001b[0m \u001b[0;34m\"__call__\"\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 659\u001b[0;31m             \u001b[0mres\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mvisit_Attribute\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mfunc\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    660\u001b[0m         \u001b[0;32melif\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mfunc\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mast\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mName\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    661\u001b[0m             \u001b[0;32mraise\u001b[0m \u001b[0mTypeError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"Only named functions are supported\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    662\u001b[0m         \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/computation/expr.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, node, **kwargs)\u001b[0m\n\u001b[1;32m    649\u001b[0m             \u001b[0;32mexcept\u001b[0m \u001b[0mAttributeError\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    650\u001b[0m                 \u001b[0;31m# something like datetime.datetime where scope is overridden\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    651\u001b[0m                 \u001b[0;32mif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mvalue\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mast\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mName\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0mvalue\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mid\u001b[0m \u001b[0;34m==\u001b[0m \u001b[0mattr\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    652\u001b[0m                     \u001b[0;32mreturn\u001b[0m \u001b[0mresolved\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 653\u001b[0;31m                 \u001b[0;32mraise\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    654\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    655\u001b[0m         \u001b[0;32mraise\u001b[0m \u001b[0mValueError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34mf\"Invalid Attribute context {type(ctx).__name__}\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/generic.py\u001b[0m in \u001b[0;36m?\u001b[0;34m(self, name)\u001b[0m\n\u001b[1;32m   5985\u001b[0m             \u001b[0;32mand\u001b[0m \u001b[0mname\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_accessors\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   5986\u001b[0m             \u001b[0;32mand\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_info_axis\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_can_hold_identifiers_and_holds_name\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mname\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   5987\u001b[0m         ):\n\u001b[1;32m   5988\u001b[0m             \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mname\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 5989\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mobject\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__getattribute__\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mname\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mAttributeError\u001b[0m: 'Series' object has no attribute 'isnumeric'"
+     ]
+    }
+   ],
+   "source": [
+    "subset=results.query(\"milliseconds.isnumeric()==False\")\n",
+    "list_unique=pd.unique(subset[\"milliseconds\"])\n",
+    "print(list_unique)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "KeyError",
+     "evalue": "'milliseconds'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mKeyError\u001b[0m                                  Traceback (most recent call last)",
+      "File \u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/indexes/base.py:3653\u001b[0m, in \u001b[0;36mIndex.get_loc\u001b[0;34m(self, key)\u001b[0m\n\u001b[1;32m   3652\u001b[0m \u001b[39mtry\u001b[39;00m:\n\u001b[0;32m-> 3653\u001b[0m     \u001b[39mreturn\u001b[39;00m \u001b[39mself\u001b[39m\u001b[39m.\u001b[39m_engine\u001b[39m.\u001b[39mget_loc(casted_key)\n\u001b[1;32m   3654\u001b[0m \u001b[39mexcept\u001b[39;00m \u001b[39mKeyError\u001b[39;00m \u001b[39mas\u001b[39;00m err:\n",
+      "File \u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/_libs/index.pyx:147\u001b[0m, in \u001b[0;36mpandas._libs.index.IndexEngine.get_loc\u001b[0;34m()\u001b[0m\n",
+      "File \u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/_libs/index.pyx:155\u001b[0m, in \u001b[0;36mpandas._libs.index.IndexEngine.get_loc\u001b[0;34m()\u001b[0m\n",
+      "File \u001b[0;32mpandas/_libs/index_class_helper.pxi:70\u001b[0m, in \u001b[0;36mpandas._libs.index.Int64Engine._check_type\u001b[0;34m()\u001b[0m\n",
+      "\u001b[0;31mKeyError\u001b[0m: 'milliseconds'",
+      "\nThe above exception was the direct cause of the following exception:\n",
+      "\u001b[0;31mKeyError\u001b[0m                                  Traceback (most recent call last)",
+      "\u001b[1;32m/Users/xuchang/Documents/GitHub/qtm151_fall_2023/final_project/Formula1-DatasetFull/Untitled-1.ipynb Cell 4\u001b[0m line \u001b[0;36m3\n\u001b[1;32m      <a href='vscode-notebook-cell:/Users/xuchang/Documents/GitHub/qtm151_fall_2023/final_project/Formula1-DatasetFull/Untitled-1.ipynb#W3sZmlsZQ%3D%3D?line=0'>1</a>\u001b[0m list_old\u001b[39m=\u001b[39m[\u001b[39m'\u001b[39m\u001b[39m\\\\\u001b[39;00m\u001b[39mN\u001b[39m\u001b[39m'\u001b[39m]\n\u001b[1;32m      <a href='vscode-notebook-cell:/Users/xuchang/Documents/GitHub/qtm151_fall_2023/final_project/Formula1-DatasetFull/Untitled-1.ipynb#W3sZmlsZQ%3D%3D?line=1'>2</a>\u001b[0m list_new\u001b[39m=\u001b[39m[\u001b[39m0\u001b[39m]\n\u001b[0;32m----> <a href='vscode-notebook-cell:/Users/xuchang/Documents/GitHub/qtm151_fall_2023/final_project/Formula1-DatasetFull/Untitled-1.ipynb#W3sZmlsZQ%3D%3D?line=2'>3</a>\u001b[0m results[\u001b[39m\"\u001b[39m\u001b[39mmilliseconds\u001b[39m\u001b[39m\"\u001b[39m]\u001b[39m=\u001b[39mresults[\u001b[39m\"\u001b[39m\u001b[39mmilliseconds\u001b[39m\u001b[39m\"\u001b[39m]\u001b[39m.\u001b[39mreplace(list_old,list_new)\n\u001b[1;32m      <a href='vscode-notebook-cell:/Users/xuchang/Documents/GitHub/qtm151_fall_2023/final_project/Formula1-DatasetFull/Untitled-1.ipynb#W3sZmlsZQ%3D%3D?line=3'>4</a>\u001b[0m results[\u001b[39m\"\u001b[39m\u001b[39mmilliseconds_numeric\u001b[39m\u001b[39m\"\u001b[39m] \u001b[39m=\u001b[39m pd\u001b[39m.\u001b[39mto_numeric(results[\u001b[39m\"\u001b[39m\u001b[39mmilliseconds\u001b[39m\u001b[39m\"\u001b[39m])\n\u001b[1;32m      <a href='vscode-notebook-cell:/Users/xuchang/Documents/GitHub/qtm151_fall_2023/final_project/Formula1-DatasetFull/Untitled-1.ipynb#W3sZmlsZQ%3D%3D?line=4'>5</a>\u001b[0m results\u001b[39m=\u001b[39mresults\u001b[39m.\u001b[39mquery(\u001b[39m'\u001b[39m\u001b[39mmilliseconds_numeric >0\u001b[39m\u001b[39m'\u001b[39m)\n",
+      "File \u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/series.py:1007\u001b[0m, in \u001b[0;36mSeries.__getitem__\u001b[0;34m(self, key)\u001b[0m\n\u001b[1;32m   1004\u001b[0m     \u001b[39mreturn\u001b[39;00m \u001b[39mself\u001b[39m\u001b[39m.\u001b[39m_values[key]\n\u001b[1;32m   1006\u001b[0m \u001b[39melif\u001b[39;00m key_is_scalar:\n\u001b[0;32m-> 1007\u001b[0m     \u001b[39mreturn\u001b[39;00m \u001b[39mself\u001b[39m\u001b[39m.\u001b[39m_get_value(key)\n\u001b[1;32m   1009\u001b[0m \u001b[39mif\u001b[39;00m is_hashable(key):\n\u001b[1;32m   1010\u001b[0m     \u001b[39m# Otherwise index.get_value will raise InvalidIndexError\u001b[39;00m\n\u001b[1;32m   1011\u001b[0m     \u001b[39mtry\u001b[39;00m:\n\u001b[1;32m   1012\u001b[0m         \u001b[39m# For labels that don't resolve as scalars like tuples and frozensets\u001b[39;00m\n",
+      "File \u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/series.py:1116\u001b[0m, in \u001b[0;36mSeries._get_value\u001b[0;34m(self, label, takeable)\u001b[0m\n\u001b[1;32m   1113\u001b[0m     \u001b[39mreturn\u001b[39;00m \u001b[39mself\u001b[39m\u001b[39m.\u001b[39m_values[label]\n\u001b[1;32m   1115\u001b[0m \u001b[39m# Similar to Index.get_value, but we do not fall back to positional\u001b[39;00m\n\u001b[0;32m-> 1116\u001b[0m loc \u001b[39m=\u001b[39m \u001b[39mself\u001b[39m\u001b[39m.\u001b[39mindex\u001b[39m.\u001b[39mget_loc(label)\n\u001b[1;32m   1118\u001b[0m \u001b[39mif\u001b[39;00m is_integer(loc):\n\u001b[1;32m   1119\u001b[0m     \u001b[39mreturn\u001b[39;00m \u001b[39mself\u001b[39m\u001b[39m.\u001b[39m_values[loc]\n",
+      "File \u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/indexes/base.py:3655\u001b[0m, in \u001b[0;36mIndex.get_loc\u001b[0;34m(self, key)\u001b[0m\n\u001b[1;32m   3653\u001b[0m     \u001b[39mreturn\u001b[39;00m \u001b[39mself\u001b[39m\u001b[39m.\u001b[39m_engine\u001b[39m.\u001b[39mget_loc(casted_key)\n\u001b[1;32m   3654\u001b[0m \u001b[39mexcept\u001b[39;00m \u001b[39mKeyError\u001b[39;00m \u001b[39mas\u001b[39;00m err:\n\u001b[0;32m-> 3655\u001b[0m     \u001b[39mraise\u001b[39;00m \u001b[39mKeyError\u001b[39;00m(key) \u001b[39mfrom\u001b[39;00m \u001b[39merr\u001b[39;00m\n\u001b[1;32m   3656\u001b[0m \u001b[39mexcept\u001b[39;00m \u001b[39mTypeError\u001b[39;00m:\n\u001b[1;32m   3657\u001b[0m     \u001b[39m# If we have a listlike key, _check_indexing_error will raise\u001b[39;00m\n\u001b[1;32m   3658\u001b[0m     \u001b[39m#  InvalidIndexError. Otherwise we fall through and re-raise\u001b[39;00m\n\u001b[1;32m   3659\u001b[0m     \u001b[39m#  the TypeError.\u001b[39;00m\n\u001b[1;32m   3660\u001b[0m     \u001b[39mself\u001b[39m\u001b[39m.\u001b[39m_check_indexing_error(key)\n",
+      "\u001b[0;31mKeyError\u001b[0m: 'milliseconds'"
+     ]
+    }
+   ],
+   "source": [
+    "list_old=['\\\\N']\n",
+    "list_new=[0]\n",
+    "results[\"milliseconds\"]=results[\"milliseconds\"].replace(list_old,list_new)\n",
+    "results[\"milliseconds_numeric\"] = pd.to_numeric(results[\"milliseconds\"])\n",
+    "results=results.query('milliseconds_numeric >0')\n",
+    "results.to_csv(\"raw_data/results.csv\")\n",
+    "results.dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "raceId                 int64\n",
+      "driverId               int64\n",
+      "stop                   int64\n",
+      "lap                    int64\n",
+      "time                  object\n",
+      "duration              object\n",
+      "stopinmilliseconds     int64\n",
+      "dtype: object\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>raceId</th>\n",
+       "      <th>driverId</th>\n",
+       "      <th>stop</th>\n",
+       "      <th>lap</th>\n",
+       "      <th>time</th>\n",
+       "      <th>duration</th>\n",
+       "      <th>stopinmilliseconds</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>841</td>\n",
+       "      <td>153</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>17:05:23</td>\n",
+       "      <td>26.898</td>\n",
+       "      <td>26898</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>841</td>\n",
+       "      <td>30</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>17:05:52</td>\n",
+       "      <td>25.021</td>\n",
+       "      <td>25021</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>841</td>\n",
+       "      <td>17</td>\n",
+       "      <td>1</td>\n",
+       "      <td>11</td>\n",
+       "      <td>17:20:48</td>\n",
+       "      <td>23.426</td>\n",
+       "      <td>23426</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>841</td>\n",
+       "      <td>4</td>\n",
+       "      <td>1</td>\n",
+       "      <td>12</td>\n",
+       "      <td>17:22:34</td>\n",
+       "      <td>23.251</td>\n",
+       "      <td>23251</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>841</td>\n",
+       "      <td>13</td>\n",
+       "      <td>1</td>\n",
+       "      <td>13</td>\n",
+       "      <td>17:24:10</td>\n",
+       "      <td>23.842</td>\n",
+       "      <td>23842</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9629</th>\n",
+       "      <td>1096</td>\n",
+       "      <td>849</td>\n",
+       "      <td>2</td>\n",
+       "      <td>38</td>\n",
+       "      <td>18:02:50</td>\n",
+       "      <td>25.174</td>\n",
+       "      <td>25174</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9630</th>\n",
+       "      <td>1096</td>\n",
+       "      <td>840</td>\n",
+       "      <td>2</td>\n",
+       "      <td>40</td>\n",
+       "      <td>18:04:44</td>\n",
+       "      <td>21.802</td>\n",
+       "      <td>21802</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9631</th>\n",
+       "      <td>1096</td>\n",
+       "      <td>839</td>\n",
+       "      <td>2</td>\n",
+       "      <td>41</td>\n",
+       "      <td>18:06:09</td>\n",
+       "      <td>21.734</td>\n",
+       "      <td>21734</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9632</th>\n",
+       "      <td>1096</td>\n",
+       "      <td>846</td>\n",
+       "      <td>2</td>\n",
+       "      <td>42</td>\n",
+       "      <td>18:07:36</td>\n",
+       "      <td>21.559</td>\n",
+       "      <td>21559</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9633</th>\n",
+       "      <td>1096</td>\n",
+       "      <td>855</td>\n",
+       "      <td>2</td>\n",
+       "      <td>44</td>\n",
+       "      <td>18:11:10</td>\n",
+       "      <td>23.159</td>\n",
+       "      <td>23159</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>9634 rows × 7 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "      raceId  driverId  stop  lap      time duration  stopinmilliseconds\n",
+       "0        841       153     1    1  17:05:23   26.898               26898\n",
+       "1        841        30     1    1  17:05:52   25.021               25021\n",
+       "2        841        17     1   11  17:20:48   23.426               23426\n",
+       "3        841         4     1   12  17:22:34   23.251               23251\n",
+       "4        841        13     1   13  17:24:10   23.842               23842\n",
+       "...      ...       ...   ...  ...       ...      ...                 ...\n",
+       "9629    1096       849     2   38  18:02:50   25.174               25174\n",
+       "9630    1096       840     2   40  18:04:44   21.802               21802\n",
+       "9631    1096       839     2   41  18:06:09   21.734               21734\n",
+       "9632    1096       846     2   42  18:07:36   21.559               21559\n",
+       "9633    1096       855     2   44  18:11:10   23.159               23159\n",
+       "\n",
+       "[9634 rows x 7 columns]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "pit_stops = pit_stops.rename(columns={'milliseconds': 'stopinmilliseconds'})\n",
+    "print(pit_stops.dtypes)\n",
+    "display(pit_stops)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "pit_races=pd.merge(pit_stops[['raceId','stopinmilliseconds']],\n",
+    "                               races[['raceId','year','date']],\n",
+    "                               on='raceId',\n",
+    "                           how=\"right\")\n",
+    "final_results=pd.merge(pit_races[[\"raceId\",\"stopinmilliseconds\",'year','date']],\n",
+    "                       results[['raceId','driverId','milliseconds_numeric']],\n",
+    "                           on=\"raceId\",\n",
+    "                           how=\"right\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<pandas.core.groupby.generic.DataFrameGroupBy object at 0x12bbfffd0>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "season_results=(final_results.query(\"year==2012\"))\n",
+    "race_results_2012=season_results.groupby([\"raceId\",\"driverId\"])\n",
+    "\n",
+    "display(race_results_2012)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "AttributeError",
+     "evalue": "'DataFrameGroupBy' object has no attribute 'groupby'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mAttributeError\u001b[0m                            Traceback (most recent call last)",
+      "\u001b[1;32m/Users/xuchang/Documents/GitHub/qtm151_fall_2023/final_project/Formula1-DatasetFull/Untitled-1.ipynb Cell 8\u001b[0m line \u001b[0;36m1\n\u001b[0;32m----> <a href='vscode-notebook-cell:/Users/xuchang/Documents/GitHub/qtm151_fall_2023/final_project/Formula1-DatasetFull/Untitled-1.ipynb#X12sZmlsZQ%3D%3D?line=0'>1</a>\u001b[0m driver_results_2012\u001b[39m=\u001b[39mrace_results_2012\u001b[39m.\u001b[39mgroupby(\u001b[39m\"\u001b[39m\u001b[39mdriverId\u001b[39m\u001b[39m\"\u001b[39m)\n",
+      "File \u001b[0;32m~/anaconda3/lib/python3.11/site-packages/pandas/core/groupby/groupby.py:952\u001b[0m, in \u001b[0;36mGroupBy.__getattr__\u001b[0;34m(self, attr)\u001b[0m\n\u001b[1;32m    949\u001b[0m \u001b[39mif\u001b[39;00m attr \u001b[39min\u001b[39;00m \u001b[39mself\u001b[39m\u001b[39m.\u001b[39mobj:\n\u001b[1;32m    950\u001b[0m     \u001b[39mreturn\u001b[39;00m \u001b[39mself\u001b[39m[attr]\n\u001b[0;32m--> 952\u001b[0m \u001b[39mraise\u001b[39;00m \u001b[39mAttributeError\u001b[39;00m(\n\u001b[1;32m    953\u001b[0m     \u001b[39mf\u001b[39m\u001b[39m\"\u001b[39m\u001b[39m'\u001b[39m\u001b[39m{\u001b[39;00m\u001b[39mtype\u001b[39m(\u001b[39mself\u001b[39m)\u001b[39m.\u001b[39m\u001b[39m__name__\u001b[39m\u001b[39m}\u001b[39;00m\u001b[39m'\u001b[39m\u001b[39m object has no attribute \u001b[39m\u001b[39m'\u001b[39m\u001b[39m{\u001b[39;00mattr\u001b[39m}\u001b[39;00m\u001b[39m'\u001b[39m\u001b[39m\"\u001b[39m\n\u001b[1;32m    954\u001b[0m )\n",
+      "\u001b[0;31mAttributeError\u001b[0m: 'DataFrameGroupBy' object has no attribute 'groupby'"
+     ]
+    }
+   ],
+   "source": [
+    "driver_results_2012=race_results_2012.groupby(\"driverId\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "base",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
